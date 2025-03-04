@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Welcome to the To-Do List App</h2>
+<p><a href="{% url 'login' %}" class="btn btn-primary">Login</a> or <a href="{% url 'register' %}" class="btn btn-success">Register</a></p>
+{% endblock %}
