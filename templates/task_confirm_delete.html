@@ -1,9 +1,111 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Delete Task</h2>
-<p>Are you sure you want to delete "{{ task.title }}"?</p>
-<form method="POST">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">Delete</button>
-</form>
+    <style>
+        /* Centering the delete confirmation box */
+        .delete-container {
+            max-width: 450px;
+            width: 100%;
+            padding: 30px;
+            backdrop-filter: blur(12px);
+            background: linear-gradient(135deg, #C65BCF, #874CCC);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Heading */
+        .delete-container h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* Paragraph Styling */
+        .delete-container p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Button Styling */
+        .btn-danger {
+            background: #F27BBD;
+            border: none;
+            font-weight: bold;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            width: 100%;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #C65BCF;
+            transform: translateY(-2px);
+        }
+
+        /* Cancel Link */
+        .cancel-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #FFC107;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+            text-decoration: none;
+        }
+
+        .cancel-link:hover {
+            color: #FFB300;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .delete-container {
+                max-width: 90%;
+                padding: 20px;
+            }
+
+            .delete-container h2 {
+                font-size: 1.6rem;
+            }
+
+            .btn-danger {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <div class="center-div">
+        <div class="container d-flex justify-content-center align-items-center min-vh-50">
+            <div class="delete-container">
+                <h2>🗑️ Delete Task</h2>
+                <p>Are you sure you want to delete <strong>"{{ task.title }}"</strong>?</p>
+    
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                </form>
+    
+                <a href="{% url 'task_list' %}" class="cancel-link">Cancel</a>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

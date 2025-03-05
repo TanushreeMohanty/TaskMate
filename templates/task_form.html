@@ -1,9 +1,140 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>{% if form.instance.id %} Edit Task {% else %} New Task {% endif %}</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-success">Save</button>
-</form>
+    <style>
+        /* Centering the Form Container */
+        .task-form-container {
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(135deg, #874CCC, #C65BCF);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            color: white;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Heading Styling */
+        .task-form-container h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* Form Styling */
+        form {
+            text-align: left;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 1rem;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: black;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        input:focus, textarea:focus, select:focus {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+            border: 1px solid #FFC107;
+        }
+
+        /* Save Button */
+        .btn-success {
+            background: #00E676;
+            border: none;
+            font-weight: bold;
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-success:hover {
+            background: #00C853;
+            transform: translateY(-2px);
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .task-form-container {
+                max-width: 90%;
+                padding: 25px;
+            }
+
+            .task-form-container h2 {
+                font-size: 1.8rem;
+            }
+
+            .btn-success {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .task-form-container {
+                padding: 20px;
+            }
+
+            .task-form-container h2 {
+                font-size: 1.6rem;
+            }
+
+            input, textarea, select {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            .btn-success {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="task-form-container">
+            <h2>{% if form.instance.id %} ✏️ Edit Task {% else %} 🆕 New Task {% endif %}</h2>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success">✅ Save Task</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}

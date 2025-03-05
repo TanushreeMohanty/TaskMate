@@ -1,54 +1,222 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<h2>Your Tasks</h2>
+    <style>
 
-<!-- Filter Options -->
-<form method="GET" action="">
-    <label for="category">Filter by Category:</label>
-    <select name="category" id="category">
-        <option value="">All</option>
-        <option value="Work">Work</option>
-        <option value="Personal">Personal</option>
-        <option value="Shopping">Shopping</option>
-    </select>
+        /* Container */
+        .task-container {
+            width: 90%;
+            max-width: 900px;
+            background: linear-gradient(135deg, #10439F, #C65BCF);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            color: white;
+            animation: fadeIn 0.8s ease-in-out;
+        }
 
-    <label for="priority">Filter by Priority:</label>
-    <select name="priority" id="priority">
-        <option value="">All</option>
-        <option value="High">High</option>
-        <option value="Medium">Medium</option>
-        <option value="Low">Low</option>
-    </select>
+        /* Heading */
+        h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
 
-    <button type="submit">Apply Filters</button>
-</form>
+        /* Filter Form */
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
 
-<table>
-    <tr>
-        <th>Title</th>
-        <th>Category</th>
-        <th>Priority</th>
-        <th>Due Date</th>
-        <th>Time Left</th>
-        <th>Status</th>
-        <th>Actions</th>
-    </tr>
-    {% for task in tasks %}
-    <tr>
-        <td>{{ task.title }}</td>
-        <td>{{ task.category }}</td>
-        <td>{{ task.priority }}</td>
-        <td>{{ task.due_date|default:"No Due Date" }}</td>
-        <td><strong>{{ task.time_left }}</strong></td>
-        <td>{% if task.completed %} ✅ Completed {% else %} ⏳ Pending {% endif %}</td>
-        <td>
-            <a href="{% url 'task_update' task.id %}">Edit</a>
-            <a href="{% url 'task_delete' task.id %}">Delete</a>
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+        select, button {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.2);
+            color: black;
+            transition: all 0.3s ease-in-out;
+            outline: none;
+        }
 
+        select:focus, button:focus {
+            background: rgba(255, 255, 255, 0.4);
+        }
 
-<a href="{% url 'task_create' %}" class="btn btn-primary">Add New Task</a>
+        button {
+            background: #00c853;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00a64f;
+            transform: scale(1.05);
+        }
+
+        /* Table Styling */
+        /* Responsive Table */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            border-radius: 10px;
+            overflow: hidden;
+            min-width: 600px; /* Ensures table does not shrink too much */
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            white-space: nowrap; /* Prevent text wrapping */
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: bold;
+        }
+
+        td {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Actions */
+        .action-links a {
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 5px;
+            display: inline-block;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .edit-btn {
+            background: #ff9800;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #d50000;
+            color: white;
+        }
+
+        .edit-btn:hover, .delete-btn:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
+        /* Add Task Button */
+        .btn-primary {
+            display: inline-block;
+            background: #2196F3;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            margin-top: 15px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+            transform: translateY(-3px);
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            select, button {
+                width: 100%;
+            }
+        }
+    </style>
+
+        <div class="task-container">
+            <h2>📋 Your Tasks</h2>
+    
+            <!-- Filter Options -->
+            <form method="GET" action="">
+                <select name="category" id="category">
+                    <option value="">🔍 Filter by Category</option>
+                    <option value="Work">Work</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Shopping">Shopping</option>
+                </select>
+    
+                <select name="priority" id="priority">
+                    <option value="">🎯 Filter by Priority</option>
+                    <option value="High">High</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+    
+                <button type="submit">✅ Apply Filters</button>
+            </form>
+    
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Due Date</th>
+                        <th>Time Left</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for task in tasks %}
+                    <tr>
+                        <td>{{ task.title }}</td>
+                        <td>{{ task.category }}</td>
+                        <td>{{ task.priority }}</td>
+                        <td>{{ task.due_date|default:"No Due Date" }}</td>
+                        <td><strong>{{ task.time_left }}</strong></td>
+                        <td>{% if task.completed %} ✅ Completed {% else %} ⏳ Pending {% endif %}</td>
+                        <td class="action-links">
+                            <a href="{% url 'task_update' task.id %}" class="edit-btn">✏️ Edit</a>
+                            <a href="{% url 'task_delete' task.id %}" class="delete-btn">🗑 Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            
+    
+            <a href="{% url 'task_create' %}" class="btn-primary">➕ Add New Task</a>
+        </div>
+
 {% endblock %}

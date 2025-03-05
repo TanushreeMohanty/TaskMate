@@ -5,7 +5,7 @@ Your ultimate to-do list buddy.
 🔹 User Authentication
 ✅ User Registration (Sign up new users)
 ✅ User Login (Secure login for users)
-✅ User Logout (Session-based logout)
+✅ User Logout
 
 📌 To-Do Task Management
 ✅ Create Tasks (Users can add new tasks)

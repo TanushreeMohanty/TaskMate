@@ -1,15 +1,149 @@
 {% extends 'base.html' %}
-{% block content %}
-<h2>Login</h2>
-<form method="POST">
-    {% csrf_token %}
-    <label for="username">Username:</label>
-    <input type="text" name="username" class="form-control" required>
-    
-    <label for="password">Password:</label>
-    <input type="password" name="password" class="form-control" required>
 
-    <button type="submit" class="btn btn-primary mt-3">Login</button>
-</form>
-<p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p>
+{% block content %}
+    <style>
+        /* Full-page background */
+
+
+        /* Centering the login form */
+        .center-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+        }
+
+        /* Login Card */
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 25px;
+            backdrop-filter: blur(15px);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #C65BCF, #F27BBD);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .login-container:hover {
+            transform: scale(1.02);
+        }
+
+        /* Card Title */
+        .login-container h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Input Fields */
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            font-size: 1rem;
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            outline: none;
+        }
+
+        /* Button Styling */
+        .btn-primary {
+            background: #FFBB00;
+            border: none;
+            font-weight: bold;
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            color: #333;
+        }
+
+        .btn-primary:hover {
+            background: #ffaa00;
+            transform: translateY(-2px);
+            color: #222;
+        }
+
+        /* Link Styling */
+        .text-center a {
+            color: #FFBB00;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .text-center a:hover {
+            color: #ffaa00;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .login-container {
+                max-width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+
+    <div class="center-div">
+        <div class="container d-flex justify-content-center">
+            <div class="login-container">
+                <h2>🔐 Login</h2>
+
+                <!-- Display error messages if authentication fails -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-danger">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Login</button>
+                </form>
+
+                <p class="text-center mt-3">
+                    Don't have an account? <a href="{% url 'register' %}">Register here</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
