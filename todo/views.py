@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from .models import Task
 from .forms import TaskForm
 from django.contrib.auth.forms import UserCreationForm
+from datetime import datetime, timedelta
 
 # Home page (redirects to login)
 def home(request):
@@ -40,7 +41,35 @@ def user_logout(request):
 # View All Tasks
 @login_required
 def task_list(request):
-    tasks = Task.objects.filter(user=request.user)
+    tasks = Task.objects.filter(user=request.user).order_by('due_date', 'priority')
+
+    # Filtering tasks based on category and priority
+    category_filter = request.GET.get('category')
+    priority_filter = request.GET.get('priority')
+
+    if category_filter:
+        tasks = tasks.filter(category=category_filter)
+
+    if priority_filter:
+        tasks = tasks.filter(priority=priority_filter)
+
+    # Calculate time left for each task
+    now = datetime.now()
+    for task in tasks:
+        if task.due_date:
+            due_datetime = datetime.combine(task.due_date, datetime.min.time())  
+            time_remaining = due_datetime - now
+
+            if time_remaining.total_seconds() < 0:
+                task.time_left = "⏳ Overdue!"
+            else:
+                days = time_remaining.days
+                hours, remainder = divmod(time_remaining.seconds, 3600)
+                minutes, _ = divmod(remainder, 60)
+                task.time_left = f"{days}d {hours}h {minutes}m left"
+        else:
+            task.time_left = "No Deadline"
+
     return render(request, 'task_list.html', {'tasks': tasks})
 
 # Create a Task

@@ -18,3 +18,11 @@ Your ultimate to-do list buddy.
 ✅ Superuser Creation (Admin can oversee tasks)
 ✅ Task Model Registered in Admin (Easier management)
 ✅ Search & Filter in Admin (Quickly find tasks)
+
+🚀 Additional Features 
+✅ Task Categories (Organize tasks by Work, Personal, Study, etc.)
+✅ Due Dates (Set deadlines for tasks)
+✅ Priority Levels (Low, Medium, High)
+✅ Dark Mode (Toggle between light/dark themes)
+✅ Task Sorting & Filtering (Sort by due date, priority, etc.)
+✅ Time Left Calculation (Days, Hours, Minutes, ⏳ Overdue!)

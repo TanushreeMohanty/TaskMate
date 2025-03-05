@@ -1,16 +1,54 @@
 {% extends 'base.html' %}
 {% block content %}
 <h2>Your Tasks</h2>
-<a href="{% url 'task_create' %}" class="btn btn-primary">Add Task</a>
-<ul class="list-group mt-3">
+
+<!-- Filter Options -->
+<form method="GET" action="">
+    <label for="category">Filter by Category:</label>
+    <select name="category" id="category">
+        <option value="">All</option>
+        <option value="Work">Work</option>
+        <option value="Personal">Personal</option>
+        <option value="Shopping">Shopping</option>
+    </select>
+
+    <label for="priority">Filter by Priority:</label>
+    <select name="priority" id="priority">
+        <option value="">All</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+    </select>
+
+    <button type="submit">Apply Filters</button>
+</form>
+
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Category</th>
+        <th>Priority</th>
+        <th>Due Date</th>
+        <th>Time Left</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
     {% for task in tasks %}
-    <li class="list-group-item d-flex justify-content-between">
-        <span>{{ task.title }} - {% if task.completed %} ✅ Completed {% else %} ❌ Pending {% endif %}</span>
-        <div>
-            <a href="{% url 'task_update' task.id %}" class="btn btn-sm btn-warning">Edit</a>
-            <a href="{% url 'task_delete' task.id %}" class="btn btn-sm btn-danger">Delete</a>
-        </div>
-    </li>
+    <tr>
+        <td>{{ task.title }}</td>
+        <td>{{ task.category }}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.due_date|default:"No Due Date" }}</td>
+        <td><strong>{{ task.time_left }}</strong></td>
+        <td>{% if task.completed %} ✅ Completed {% else %} ⏳ Pending {% endif %}</td>
+        <td>
+            <a href="{% url 'task_update' task.id %}">Edit</a>
+            <a href="{% url 'task_delete' task.id %}">Delete</a>
+        </td>
+    </tr>
     {% endfor %}
-</ul>
+</table>
+
+
+<a href="{% url 'task_create' %}" class="btn btn-primary">Add New Task</a>
 {% endblock %}
